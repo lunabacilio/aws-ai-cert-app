@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS AI Practitioner Quiz</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+<body>
+    <div class="container-fluid bg-gradient-primary min-vh-100">
+        <div class="container py-5">
+            <!-- Header Principal -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-12 text-center">
+                    <div class="hero-section">
+                        <i class="fas fa-cloud text-white display-1 mb-3"></i>
+                        <h1 class="display-3 fw-bold text-white mb-3">
+                            AWS AI Practitioner Quiz
+                        </h1>
+                        <p class="lead text-white-50 mb-4">
+                            Prepare for the AWS AI Practitioner certification exam
+                        </p>
+                        
+                        <!-- Question counter -->
+                        <div class="question-counter">
+                            <div class="badge bg-light text-primary fs-5 px-4 py-2">
+                                <i class="fas fa-question-circle me-2"></i>
+                                <span id="totalQuestions">{{ total_questions }}</span> questions available
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz configuration form -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-6">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header bg-white text-center py-4">
+                            <h3 class="mb-0 text-primary">
+                                <i class="fas fa-cogs me-2"></i>
+                                Configure Quiz
+                            </h3>
+                        </div>
+                        
+                        <div class="card-body p-4">
+                            <form action="{{ url_for('start_quiz') }}" method="POST" id="quizForm">
+                                
+                                <!-- Quiz Mode -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold text-dark">
+                                        <i class="fas fa-play-circle me-2"></i>
+                                        Quiz Mode
+                                    </label>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-check quiz-mode-option">
+                                                <input class="form-check-input" type="radio" name="quiz_mode" 
+                                                       id="immediate" value="immediate" checked>
+                                                <label class="form-check-label" for="immediate">
+                                                    <div class="option-card">
+                                                        <i class="fas fa-bolt text-warning mb-2"></i>
+                                                        <h6>Immediate Feedback</h6>
+                                                        <small class="text-muted">See answer after each question</small>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check quiz-mode-option">
+                                                <input class="form-check-input" type="radio" name="quiz_mode" 
+                                                       id="batch" value="batch">
+                                                <label class="form-check-label" for="batch">
+                                                    <div class="option-card">
+                                                        <i class="fas fa-list-check text-info mb-2"></i>
+                                                        <h6>Exam Mode</h6>
+                                                        <small class="text-muted">See all answers at the end</small>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Question Selection -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold text-dark">
+                                        <i class="fas fa-filter me-2"></i>
+                                        Question Selection
+                                    </label>
+                                    
+                                    <!-- All questions -->
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="selection_type" 
+                                               id="all_questions" value="all" checked>
+                                        <label class="form-check-label" for="all_questions">
+                                            <strong>All questions</strong> ({{ total_questions }} questions)
+                                        </label>
+                                    </div>
+
+                                    <!-- Specific range -->
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="selection_type" 
+                                               id="range_questions" value="range">
+                                        <label class="form-check-label" for="range_questions">
+                                            <strong>Specific range</strong>
+                                        </label>
+                                        <div class="mt-2 ms-4" id="rangeInputs" style="display: none;">
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <label class="form-label small">From:</label>
+                                                    <input type="number" class="form-control form-control-sm" 
+                                                           name="start_range" min="1" max="{{ total_questions }}" 
+                                                           value="1" id="startRange">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="form-label small">To:</label>
+                                                    <input type="number" class="form-control form-control-sm" 
+                                                           name="end_range" min="1" max="{{ total_questions }}" 
+                                                           value="10" id="endRange">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Random questions -->
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="selection_type" 
+                                               id="random_questions" value="random">
+                                        <label class="form-check-label" for="random_questions">
+                                            <strong>Random questions</strong>
+                                        </label>
+                                        <div class="mt-2 ms-4" id="randomInputs" style="display: none;">
+                                            <label class="form-label small">Number of questions:</label>
+                                            <input type="number" class="form-control form-control-sm" 
+                                                   name="num_random" min="1" max="{{ total_questions }}" 
+                                                   value="10" id="numRandom" style="max-width: 120px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Start button -->
+                                <div class="text-center mt-5">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5 py-3 start-btn">
+                                        <i class="fas fa-play me-2"></i>
+                                        Start Quiz
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Información adicional -->
+                    <div class="row mt-4">
+                        <div class="col-md-4 text-center">
+                            <div class="info-card">
+                                <i class="fas fa-clock text-primary mb-2"></i>
+                                <h6 class="text-white">Tiempo Estimado</h6>
+                                <small class="text-white-50">2-3 minutos por pregunta</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="info-card">
+                                <i class="fas fa-trophy text-warning mb-2"></i>
+                                <h6 class="text-white">Meta</h6>
+                                <small class="text-white-50">80% para aprobar</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="info-card">
+                                <i class="fas fa-chart-line text-success mb-2"></i>
+                                <h6 class="text-white">Seguimiento</h6>
+                                <small class="text-white-50">Progreso en tiempo real</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle changes in question selection
+            const selectionInputs = document.querySelectorAll('input[name="selection_type"]');
+            const rangeInputs = document.getElementById('rangeInputs');
+            const randomInputs = document.getElementById('randomInputs');
+
+            selectionInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    // Hide all additional inputs
+                    rangeInputs.style.display = 'none';
+                    randomInputs.style.display = 'none';
+
+                    // Show the corresponding input
+                    if (this.value === 'range') {
+                        rangeInputs.style.display = 'block';
+                    } else if (this.value === 'random') {
+                        randomInputs.style.display = 'block';
+                    }
+                });
+            });
+
+            // Form validation
+            document.getElementById('quizForm').addEventListener('submit', function(e) {
+                const selectionType = document.querySelector('input[name="selection_type"]:checked').value;
+                
+                if (selectionType === 'range') {
+                    const startRange = parseInt(document.getElementById('startRange').value);
+                    const endRange = parseInt(document.getElementById('endRange').value);
+                    
+                    if (startRange > endRange) {
+                        e.preventDefault();
+                        alert('The initial range must be less than or equal to the final range.');
+                        return;
+                    }
+                } else if (selectionType === 'random') {
+                    const numRandom = parseInt(document.getElementById('numRandom').value);
+                    const totalQuestions = {{ total_questions }};
+                    
+                    if (numRandom > totalQuestions) {
+                        e.preventDefault();
+                        alert('You cannot select more than ' + totalQuestions + ' questions.');
+                        return;
+                    }
+                }
+            });
+
+            // Entry animation
+            const cards = document.querySelectorAll('.card, .info-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

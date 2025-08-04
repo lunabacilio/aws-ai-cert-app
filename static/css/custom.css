@@ -1,0 +1,496 @@
+/* 
+AWS AI Practitioner Quiz - Estilos Optimizados
+=============================================== 
+Versión limpia y optimizada para máxima legibilidad y rendimiento
+*/
+
+/* ===== VARIABLES CSS ===== */
+:root {
+    --aws-orange: #FF9900;
+    --aws-blue: #232F3E;
+    --aws-light-blue: #4A90E2;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    --bg-white: #ffffff;
+    --border-light: #dee2e6;
+}
+
+/* ===== LAYOUT PRINCIPAL ===== */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--aws-blue) 0%, var(--aws-light-blue) 100%);
+}
+
+.hero-section {
+    padding: 2rem 0;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.question-counter {
+    margin-top: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* ===== FORMULARIO PRINCIPAL ===== */
+.quiz-mode-option .form-check-input {
+    display: none;
+}
+
+.quiz-mode-option .form-check-label {
+    cursor: pointer;
+    width: 100%;
+}
+
+.option-card {
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: var(--bg-white) !important;
+    color: var(--text-dark) !important;
+}
+
+.option-card:hover {
+    border-color: var(--aws-light-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.quiz-mode-option .form-check-input:checked + .form-check-label .option-card {
+    border-color: var(--aws-light-blue);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+}
+
+.option-card i {
+    display: block;
+    font-size: 2rem;
+}
+
+/* ===== CONFIGURACIÓN DEL QUIZ ===== */
+.card {
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.card-body {
+    background-color: var(--bg-white) !important;
+    color: var(--text-dark) !important;
+}
+
+/* Asegurar que todos los elementos del formulario sean legibles */
+.card-body .form-label,
+.card-body .form-check-label,
+.card-body .form-check-label strong,
+.card-body label {
+    color: var(--text-dark) !important;
+    font-weight: 600 !important;
+}
+
+.card-body .form-check-label small {
+    color: var(--text-muted) !important;
+}
+
+.card-body input[type="number"] {
+    color: var(--text-dark) !important;
+    background-color: var(--bg-white) !important;
+    border: 1px solid var(--border-light);
+}
+
+/* ===== PREGUNTAS DEL QUIZ ===== */
+.question-text {
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: var(--text-dark) !important;
+    font-weight: 500 !important;
+}
+
+.question-text p,
+.question-text .lead {
+    color: var(--text-dark) !important;
+    font-weight: 500 !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    padding: 0.75rem !important;
+    border-radius: 6px !important;
+    border: 1px solid var(--border-light) !important;
+}
+
+/* ===== OPCIONES DE RESPUESTA ===== */
+.options-container .option-item {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin-bottom: 1rem !important;
+}
+
+.options-container .option-item .option-card {
+    background-color: var(--bg-white) !important;
+    border: 2px solid var(--border-light) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: 1rem;
+}
+
+.options-container .option-item:hover .option-card {
+    background-color: #f8f9fa !important;
+    border-color: #adb5bd !important;
+    transform: translateX(5px);
+}
+
+.option-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--text-muted) !important;
+    color: white !important;
+    font-weight: bold;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.option-content {
+    flex: 1;
+    color: var(--text-dark) !important;
+    font-weight: 500;
+}
+
+/* Estados seleccionados */
+.options-container .form-check-input[type="radio"]:checked + .option-label {
+    background-color: #007bff;
+    color: white !important;
+    border-radius: 8px;
+}
+
+.options-container .form-check-input[type="radio"]:checked + .option-label .option-card {
+    background-color: transparent;
+    border-color: transparent;
+    color: white !important;
+}
+
+.options-container .form-check-input[type="checkbox"]:checked + .option-label {
+    background-color: var(--success-color);
+    color: white !important;
+    border-radius: 8px;
+}
+
+.options-container .form-check-input[type="checkbox"]:checked + .option-label .option-card {
+    background-color: transparent;
+    border-color: transparent;
+    color: white !important;
+}
+
+.option-label {
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-bottom: 0;
+    background-color: transparent !important;
+}
+
+/* ===== CARDS DE PROGRESO ===== */
+.card-header.bg-primary {
+    background: linear-gradient(135deg, var(--aws-blue) 0%, var(--aws-light-blue) 100%) !important;
+    color: white !important;
+    border: none;
+}
+
+.card-header.bg-primary h5,
+.card-header.bg-primary .badge,
+.card-header.bg-primary * {
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+.badge.bg-light.text-primary {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ===== INDICADORES DE PROGRESO ===== */
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    background-color: rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--aws-light-blue) 0%, var(--aws-orange) 100%);
+    border-radius: 4px;
+}
+
+/* ===== FEEDBACK Y RESULTADOS ===== */
+.answer-card {
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background-color: var(--bg-white) !important;
+}
+
+.answer-card.correct {
+    border-color: var(--success-color);
+    background-color: rgba(40, 167, 69, 0.1) !important;
+}
+
+.answer-card.incorrect {
+    border-color: var(--danger-color);
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+.card-header.bg-success {
+    background-color: #155724 !important;
+    color: white !important;
+}
+
+.card-header.bg-danger {
+    background-color: #721c24 !important;
+    color: white !important;
+}
+
+.answer-option {
+    display: flex;
+    align-items: center;
+}
+
+.answer-option .option-letter {
+    min-width: 30px;
+    height: 30px;
+    margin-right: 1rem;
+}
+
+.answer-card.correct .option-letter {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.answer-card.incorrect .option-letter {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/* ===== BOTONES ===== */
+.start-btn {
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, var(--aws-light-blue) 0%, var(--aws-blue) 100%);
+    border: none;
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+    background: linear-gradient(135deg, var(--aws-blue) 0%, var(--aws-light-blue) 100%);
+}
+
+.btn {
+    font-weight: 600;
+}
+
+.btn-pulse {
+    animation: pulse 1s infinite;
+}
+
+/* ===== NAVEGACIÓN ===== */
+.fixed-submit-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    animation: bounce 2s infinite;
+}
+
+.fixed-submit-btn .btn {
+    border-radius: 50px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.quick-nav {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 999;
+    max-width: 200px;
+}
+
+/* ===== PREGUNTAS DE MAPEO (HOTSPOT) ===== */
+.mapping-container {
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    padding: 1.5rem;
+    background-color: var(--bg-white);
+}
+
+.mapping-item {
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--bg-white);
+    transition: all 0.3s ease;
+}
+
+.mapping-item:hover {
+    border-color: var(--aws-light-blue);
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+}
+
+.mapping-item.completed {
+    border-color: var(--success-color);
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+}
+
+.mapping-item select {
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    padding: 0.5rem;
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+}
+
+/* ===== ALERTAS ===== */
+.alert-info {
+    background-color: #d1ecf1 !important;
+    border-color: #bee5eb !important;
+    color: #0c5460 !important;
+}
+
+.alert-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.alert-warning.mapping-alert {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+    border-color: var(--warning-color);
+    color: #856404;
+}
+
+/* ===== BADGES ===== */
+.badge {
+    font-weight: 600;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.answer-display .badge {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    .quick-nav {
+        position: static;
+        transform: none;
+        margin-top: 2rem;
+    }
+    
+    .fixed-submit-btn {
+        position: static;
+        text-align: center;
+        margin: 2rem 0;
+    }
+    
+    .option-card {
+        padding: 1rem;
+    }
+    
+    .option-letter {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        padding: 1rem 0;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .option-card {
+        padding: 0.75rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* ===== ACCESIBILIDAD ===== */
+.form-check-input:focus + .form-check-label .option-card {
+    outline: 2px solid var(--aws-light-blue);
+    outline-offset: 2px;
+}
+
+/* Modo alto contraste */
+@media (prefers-contrast: high) {
+    .option-card {
+        border-width: 3px;
+    }
+    
+    .option-letter {
+        background-color: #000000 !important;
+    }
+    
+    .question-text p,
+    .question-text .lead {
+        border-width: 2px !important;
+    }
+}
+
+/* ===== UTILIDADES ===== */
+.text-dark {
+    color: var(--text-dark) !important;
+    font-weight: 500 !important;
+}
+
+.lead {
+    color: var(--text-dark) !important;
+    font-weight: 500 !important;
+}

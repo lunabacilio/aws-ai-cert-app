@@ -1,0 +1,45 @@
+# .dockerignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+.pytest_cache/
+.mypy_cache/
+
+# Git
+.git
+.gitignore
+
+# Development files
+*.md.bak
+*_backup.*
+*_old.*
+test_*.py
+debug_*.py
+demo_*.html
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.venv
+venv/
+env/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

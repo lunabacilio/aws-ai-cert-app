@@ -1,0 +1,13 @@
+# AWS AI Practitioner Quiz - Dependencias de Python
+# ================================================
+# Instalar con: pip install -r requirements.txt
+
+# Framework web principal
+Flask==3.0.0
+
+# Utilidades para trabajar con JSON y datos
+Werkzeug==3.0.1
+
+# Opcional: Para desarrollo y debugging
+# flask-cors==4.0.0  # Si necesitas CORS para desarrollo frontend
+# python-dotenv==1.0.0  # Para variables de entorno
