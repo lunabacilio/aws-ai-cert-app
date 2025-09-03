@@ -206,7 +206,10 @@ class AnswerProcessor:
         is_correct = True
         
         for sub_question_key in self.question['options'].keys():
-            field_name = f'{question_prefix}mapping_{sub_question_key}'
+            if question_prefix == "batch":
+                field_name = f'mapping_{self.question["question_number"]}_{sub_question_key}'
+            else:
+                field_name = f'{question_prefix}mapping_{sub_question_key}'
             user_answer = form_data.get(field_name)
             user_answers[sub_question_key] = user_answer
             
@@ -218,7 +221,11 @@ class AnswerProcessor:
     
     def _process_multiple_choice_answer(self, form_data, question_prefix, correct_answers):
         """Process multiple choice answer"""
-        field_name = f'{question_prefix}answer' if not question_prefix else f'question_{self.question["question_number"]}'
+        if question_prefix == "batch":
+            field_name = f'question_{self.question["question_number"]}'
+        else:
+            field_name = f'{question_prefix}answer'
+        
         user_answers = form_data.getlist(field_name)
         user_answers.sort()
         correct_answers_sorted = sorted(correct_answers)
@@ -234,7 +241,11 @@ class AnswerProcessor:
     
     def _process_single_answer(self, form_data, question_prefix, correct_answers):
         """Process single choice answer"""
-        field_name = f'{question_prefix}answer' if not question_prefix else f'question_{self.question["question_number"]}'
+        if question_prefix == "batch":
+            field_name = f'question_{self.question["question_number"]}'
+        else:
+            field_name = f'{question_prefix}answer'
+            
         user_answer = form_data.get(field_name)
         user_answers = [user_answer] if user_answer else []
         is_correct = user_answer == correct_answers[0]
@@ -555,6 +566,9 @@ def submit_batch():
         app.logger.error("❌ No questions available in session")
         return redirect(url_for('index'))
     
+    app.logger.info(f"🔍 Processing batch submission for {len(questions)} questions")
+    app.logger.info(f"🔍 Form data keys: {list(request.form.keys())}")
+    
     correct_answers = 0
     user_answers = {}
     
@@ -564,12 +578,16 @@ def submit_batch():
         processor = AnswerProcessor(question)
         
         # For batch mode, we need to use question-specific field names
-        prefix = f"{question_id}_" if is_mapping_question(question) else ""
-        user_answer_data, is_correct, _, _ = processor.process_user_answer(request.form, prefix)
+        # No prefix needed - the AnswerProcessor will handle batch mode field names
+        user_answer_data, is_correct, _, _ = processor.process_user_answer(request.form, "batch")
+        
+        app.logger.info(f"🔍 Question {question_id}: user_answer={user_answer_data}, is_correct={is_correct}")
         
         user_answers[question_id] = user_answer_data
         if is_correct:
             correct_answers += 1
+    
+    app.logger.info(f"🔍 Final results: {correct_answers}/{len(questions)} correct")
     
     # Save results in session
     session['user_answers'] = user_answers
